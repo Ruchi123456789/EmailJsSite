@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="sendMail.css" />
+</head>
+
+<body>
+    <form id="contact-form" name="contact-form">
+        <div class="container">
+            <input type="text" class="field" id="name" name="name" placeholder="Enter your name" required /> <br />
+            <input type="text" class="field" id="fromName" name="fromName" hidden placeholder="Enter email" required />
+            <input type="email" class="field" id="email" name="email" placeholder="Enter email" required /><br />
+            <!-- <input type="text" class="field" id="msg" placeholder="Enter your message" /><br /> -->
+            <button type="submit" class="btn" id="btn" onclick="sendMail(event)">Send mail</button>
+        </div>
+
+    </form>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function () {
+            emailjs.init('3GMr9oM9QykiWHqq_');
+        })();
+        let btn = document.getElementById("btn");
+        let name = document.getElementById("name");
+        let email = document.getElementById("email");
+
+
+        function sendMail(event) {
+
+            var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+            if ((name.value == "" || email.value == "") || (name.value == "" && email.value == "")) {
+                alert("Please fill all the details..");
+            }
+
+
+            if (!filter.test(email.value) && email.value !== "") {
+                alert('Please provide a valid email address');
+                email.focus;
+                return false;
+            }
+
+            event.preventDefault();
+            console.log("yoo");
+
+            var params = {
+                to_name: document.getElementById("name").value,
+                from_name: "Ruchi",
+                email: document.getElementById("email").value,
+                // message: document.getElementById("msg").value,
+            }
+
+            // console.log(emailjs)
+            emailjs.send("service_4t3mkwa", "template_yop5l8b", params).then(function (res) {
+                console.log("success", res.status)
+            });
+
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+
+        }
+    </script>
+</body>
+
+</html>
